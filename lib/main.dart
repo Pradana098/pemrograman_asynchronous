@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+import 'package:async/async.dart';
+import 'package:pemrograman_asynchronous/geolocation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const FuturePage(),
+      home: LocationScreen(),
     );
   }
 }
@@ -78,16 +80,48 @@ class _FuturePageState extends State<FuturePage> {
   }
 
   Future calculate() async {
-    try{
+    try {
       await Future.delayed(const Duration(seconds: 5));
       completer.complete(42);
-    }
-    catch (_) {
+    } catch (_) {
       completer.completeError({});
     }
   }
 
-  
+  void returnFG() {
+    Future.wait<int>([
+      returnOneAsync(),
+      returnTwoAsync(),
+      returnThreeAsync(),
+    ]).then((List<int> value) {
+      int total = 0;
+      for (var element in value) {
+        total += element;
+      }
+      setState(() {
+        result = total.toString();
+      });
+    });
+  }
+
+  Future returnError() async {
+    await Future.delayed(const Duration(seconds: 2));
+    throw Exception('Something terrible happened!');
+  }
+
+  Future handleError() async{
+    try{
+      await returnError();
+    }
+    catch(error){
+      setState(() {
+        result = error.toString();
+      });
+    }
+    finally{
+      print('Complete');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,17 +135,15 @@ class _FuturePageState extends State<FuturePage> {
           ElevatedButton(
             child: const Text('GO!'),
             onPressed: () {
-              setState(() {});
-              getNumber().then((value) {
-                // result = value.body.toString().substring(0, 450);
+              returnError().then((value) {
                 setState(() {
-                  result = value.toString();
+                  result = 'Success';
                 });
-              }).catchError((_) {
-                result = 'An error occurred';
-                // setState(() {});
-              });
-              // Count();
+              }).catchError((onError) {
+                setState(() {
+                  result = onError.toString();
+                });
+              }).whenComplete(() => print('Complete'));
             },
           ),
           const Spacer(),
