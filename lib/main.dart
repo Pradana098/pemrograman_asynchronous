@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+import 'package:pemrograman_asynchronous/geolocation.dart';
 import 'package:pemrograman_asynchronous/navigation_dialog.dart';
 // import 'package:async/async.dart';
 // import 'package:pemrograman_asynchronous/geolocation.dart';
@@ -81,7 +82,7 @@ class _FuturePageState extends State<FuturePage> {
     return completer.future;
   }
 
-  Future calculate() async {
+  calculate() async {
     try {
       await Future.delayed(const Duration(seconds: 5));
       completer.complete(42);
@@ -137,15 +138,41 @@ class _FuturePageState extends State<FuturePage> {
           ElevatedButton(
             child: const Text('GO!'),
             onPressed: () {
-              returnError().then((value) {
+              handleError().then((value){
                 setState(() {
-                  result = 'Success';
+                  result = 'Succes';
                 });
-              }).catchError((onError) {
+              }).catchError((onError){
                 setState(() {
                   result = onError.toString();
                 });
               }).whenComplete(() => print('Complete'));
+              // returnError().then((value){
+              //   setState(() {
+              //     result = 'Succes';
+              //   });
+              // }).catchError((onError){
+              //   setState(() {
+              //     result = onError.toString();
+              //   });
+              // }).whenComplete(() => print('Complete'));
+              // returnFG();
+              // getNumber().then((value){
+              //   setState(() {
+              //     result = value.toString();
+              //   });
+              // }).catchError((e){
+              //   result = 'An error occurred';
+              // });
+              // returnError().then((value) {
+              //   setState(() {
+              //     result = 'Success';
+              //   });
+              // }).catchError((onError) {
+              //   setState(() {
+              //     result = onError.toString();
+              //   });
+              // }).whenComplete(() => print('Complete'));
             },
           ),
           const Spacer(),
