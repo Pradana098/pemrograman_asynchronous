@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
-import 'package:async/async.dart';
-import 'package:pemrograman_asynchronous/geolocation.dart';
+import 'package:pemrograman_asynchronous/navigation_dialog.dart';
+// import 'package:async/async.dart';
+// import 'package:pemrograman_asynchronous/geolocation.dart';
+import 'package:pemrograman_asynchronous/navigation_first.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LocationScreen(),
+      home: const NavigationDialogScreen(),
     );
   }
 }
